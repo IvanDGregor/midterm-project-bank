@@ -1,23 +1,25 @@
 package com.ironhack.midtermprojectbank.model.accounts;
 
 import com.ironhack.midtermprojectbank.enums.Status;
+import com.ironhack.midtermprojectbank.model.currency.Money;
+import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 
 import java.math.BigDecimal;
 
-public class Savings extends Checking{
+public class Savings extends StudentChecking{
 
-    private BigDecimal interestRate;
+    private Money minimumBalance;
 
-    public Savings(Money balance, String secretKey, String primaryOwner, String secundaryOwner, BigDecimal penaltyFee, Status status, BigDecimal interestRate) {
-        super(balance, secretKey, primaryOwner, secundaryOwner, penaltyFee, status);
-        this.interestRate = interestRate;
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee, String secretKey, Status status, Money minimumBalance) {
+        super(balance, primaryOwner, secondaryOwner, penaltyFee, secretKey, status);
+        this.minimumBalance = minimumBalance;
     }
 
-    public BigDecimal getInterestRate() {
-        return interestRate;
+    public Money getMinimumBalance() {
+        return minimumBalance;
     }
 
-    public void setInterestRate(BigDecimal interestRate) {
-        this.interestRate = interestRate;
+    public void setMinimumBalance(Money minimumBalance) {
+        this.minimumBalance = minimumBalance;
     }
 }

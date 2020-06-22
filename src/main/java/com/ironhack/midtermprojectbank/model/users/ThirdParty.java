@@ -2,20 +2,20 @@ package com.ironhack.midtermprojectbank.model.users;
 
 public class ThirdParty {
 
-    private String key;
+    private String hasKey;
     private String name;
 
-    public ThirdParty(String key, String name) {
-        this.key = key;
+    public ThirdParty(String hasKey, String name) {
+        this.hasKey = hasKey;
         this.name = name;
     }
 
-    public String getKey() {
-        return key;
+    public String getHasKey() {
+        return hasKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setHasKey(String hasKey) {
+        this.hasKey = hasKey;
     }
 
     public String getName() {

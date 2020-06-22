@@ -1,27 +1,21 @@
 package com.ironhack.midtermprojectbank.model.users;
 
+
+import com.ironhack.midtermprojectbank.model.address.Address;
+
 import java.time.LocalDateTime;
 
-public class AccountHolder {
+public class AccountHolder extends User{
 
-    private String name;
     private LocalDateTime dateOfBirth;
-    private Adress primaryAdress;
-    private Adress mailingAdress;
+    private Address primaryAdress;
+    private Address mailingAdress;
 
-    public AccountHolder(String name, LocalDateTime dateOfBirth, Adress primaryAdress, Adress mailingAdress) {
-        this.name = name;
+    public AccountHolder(String name, String password, LocalDateTime dateOfBirth, Address primaryAdress, Address mailingAdress) {
+        super(name, password);
         this.dateOfBirth = dateOfBirth;
         this.primaryAdress = primaryAdress;
         this.mailingAdress = mailingAdress;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public LocalDateTime getDateOfBirth() {
@@ -32,19 +26,19 @@ public class AccountHolder {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Adress getPrimaryAdress() {
+    public Address getPrimaryAdress() {
         return primaryAdress;
     }
 
-    public void setPrimaryAdress(Adress primaryAdress) {
+    public void setPrimaryAdress(Address primaryAdress) {
         this.primaryAdress = primaryAdress;
     }
 
-    public Adress getMailingAdress() {
+    public Address getMailingAdress() {
         return mailingAdress;
     }
 
-    public void setMailingAdress(Adress mailingAdress) {
+    public void setMailingAdress(Address mailingAdress) {
         this.mailingAdress = mailingAdress;
     }
 }
