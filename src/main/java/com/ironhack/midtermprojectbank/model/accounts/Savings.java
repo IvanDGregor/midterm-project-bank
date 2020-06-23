@@ -13,10 +13,12 @@ import java.math.BigDecimal;
 public class Savings extends StudentChecking{
 
     private BigDecimal minimumBalance;
+    private BigDecimal interestRate;
 
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee, String secretKey, Status status, BigDecimal minimumBalance) {
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee, String secretKey, Status status, BigDecimal minimumBalance, BigDecimal interestRate) {
         super(balance, primaryOwner, secondaryOwner, penaltyFee, secretKey, status);
         this.minimumBalance = minimumBalance;
+        this.interestRate = interestRate;
     }
 
     public Savings() {
@@ -28,5 +30,13 @@ public class Savings extends StudentChecking{
 
     public void setMinimumBalance(BigDecimal minimumBalance) {
         this.minimumBalance = minimumBalance;
+    }
+
+    public BigDecimal getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(BigDecimal interestRate) {
+        this.interestRate = interestRate;
     }
 }
