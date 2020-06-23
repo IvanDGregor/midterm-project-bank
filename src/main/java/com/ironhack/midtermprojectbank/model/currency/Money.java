@@ -1,13 +1,17 @@
 package com.ironhack.midtermprojectbank.model.currency;
 
+import javax.persistence.Embeddable;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
 import java.util.Currency;
+@Embeddable
 public class Money implements Transactional {
+
     private static final Currency USD = Currency.getInstance("USD");
     private static final RoundingMode DEFAULT_ROUNDING = RoundingMode.HALF_EVEN;
     private final Currency currency;
     private BigDecimal amount;
+
     /**
      * Class constructor specifying amount, currency, and rounding
      **/
@@ -27,6 +31,8 @@ public class Money implements Transactional {
     public Money(BigDecimal amount) {
         this(amount, USD, DEFAULT_ROUNDING);
     }
+
+
     public BigDecimal increaseAmount(Money money) {
         setAmount(this.amount.add(money.amount));
         return this.amount;

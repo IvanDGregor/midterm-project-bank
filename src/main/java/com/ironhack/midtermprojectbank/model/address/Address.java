@@ -1,5 +1,8 @@
 package com.ironhack.midtermprojectbank.model.address;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Address {
 
     private String street;
