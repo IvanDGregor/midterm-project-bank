@@ -1,6 +1,7 @@
 package com.ironhack.midtermprojectbank.controller.impl;
 
 import com.ironhack.midtermprojectbank.controller.interfaces.AdminControllerInterface;
+import com.ironhack.midtermprojectbank.model.accounts.Checking;
 import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.model.accounts.Savings;
 import com.ironhack.midtermprojectbank.service.AdminService;
@@ -28,8 +29,9 @@ public class AdminController implements AdminControllerInterface {
         return adminService.createCreditCard(creditCard);
     }
 
-
-
-
-
+    @PostMapping("/admin/create/checking")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createAccount(@RequestBody Checking checking) {
+        return adminService.createChecking(checking);
+    }
 }

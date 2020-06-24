@@ -3,14 +3,22 @@ package com.ironhack.midtermprojectbank.service;
 import com.ironhack.midtermprojectbank.exception.IllegalCreditLimit;
 import com.ironhack.midtermprojectbank.exception.IllegalInterestRateException;
 import com.ironhack.midtermprojectbank.exception.IllegalMinimumBalance;
+import com.ironhack.midtermprojectbank.model.accounts.Checking;
 import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.model.accounts.Savings;
-import com.ironhack.midtermprojectbank.repository.AccountRepository;
-import com.ironhack.midtermprojectbank.repository.AdminRepository;
+import com.ironhack.midtermprojectbank.model.accounts.StudentChecking;
+import com.ironhack.midtermprojectbank.model.currency.Money;
+import com.ironhack.midtermprojectbank.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class AdminService {
@@ -18,6 +26,14 @@ public class AdminService {
     AdminRepository adminRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    SavingsRepository savingsRepository;
+    @Autowired
+    CreditCardRepository creditCardRepository;
+    @Autowired
+    StudentCheckingRepository studentCheckingRepository;
+    @Autowired
+    CheckingRepository checkingRepository;
 
     public Savings createSaving(Savings newAccount) throws IllegalInterestRateException{
         Savings newSaving = new Savings(newAccount.getBalance(),newAccount.getPrimaryOwner(),newAccount.getSecondaryOwner(),newAccount.getPenaltyFee(),newAccount.getSecretKey(),newAccount.getStatus(),newAccount.getMinimumBalance(),newAccount.getInterestRate());
@@ -42,7 +58,7 @@ public class AdminService {
         else if(newSaving.getMinimumBalance() == null){
             newSaving.setMinimumBalance(new BigDecimal("1000"));
         }
-        return accountRepository.save(newSaving);
+        return savingsRepository.save(newSaving);
     }
 
     public CreditCard createCreditCard(CreditCard newAccount) {
@@ -63,6 +79,37 @@ public class AdminService {
         } else if (newCreditCard.getInterestRate().compareTo(maxInterestRate) > 0 || newCreditCard.getInterestRate().compareTo(minInterestRate) < 0) {
             throw new IllegalInterestRateException("Interest Rate must be lower than 0.2 and higher than 0.1");
         }
-        return accountRepository.save(newCreditCard);
+        return creditCardRepository.save(newCreditCard);
+    }
+
+    public String createChecking(Checking newAccount){
+        Checking newChecking = new Checking(newAccount.getBalance(),newAccount.getPrimaryOwner(),newAccount.getSecondaryOwner(),newAccount.getPenaltyFee(),newAccount.getSecretKey(),newAccount.getStatus(),newAccount.getMinimumBalance(),newAccount.getMonthlyMaintenanceFee());
+        BigDecimal min = new BigDecimal("100");
+
+        if (newChecking.getMinimumBalance() == null) {
+            newChecking.setMinimumBalance(new Money(new BigDecimal("250")));
+        }
+        else if(newChecking.getMonthlyMaintenanceFee() == null){
+            newChecking.setMonthlyMaintenanceFee(new BigDecimal("12"));
+        }
+        else if (newChecking.getMinimumBalance().getAmount().compareTo(BigDecimal.ZERO) < 0 || newChecking.getMonthlyMaintenanceFee().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Invalid Minimum Balance or Monthly Maintenance Fee");
+        }
+        
+        // Get the current time
+        LocalDateTime now = LocalDateTime.now();
+        // Calculate the days between current time and the date of Birth of the Primary Owner
+        Long daysPrimaryOwner = DAYS.between(newAccount.getPrimaryOwner().getDateOfBirth(),now);
+        // 24 years == 8760 days if the primary Owner have less 8760 days then created
+        // a StudentChecking otherwise created a Checking Account
+        if(daysPrimaryOwner < 8760){
+            StudentChecking newStudentChecking = new StudentChecking(newAccount.getBalance(),newAccount.getPrimaryOwner(),newAccount.getSecondaryOwner(),newAccount.getPenaltyFee(),newAccount.getSecretKey(),newAccount.getStatus());
+            studentCheckingRepository.save(newStudentChecking);
+            return "StudentChecking account created";
+        }
+        else {
+            checkingRepository.save(newChecking);
+            return "Checking account created";
+        }
     }
 }
