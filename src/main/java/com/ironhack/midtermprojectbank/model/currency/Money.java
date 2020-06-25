@@ -30,6 +30,10 @@ public class Money implements Transactional {
         this(amount, USD, DEFAULT_ROUNDING);
     }
 
+    public Money() {
+        currency = Currency.getInstance("USD");
+    }
+
     public BigDecimal increaseAmount(Money money) {
         setAmount(this.amount.add(money.amount));
         return this.amount;

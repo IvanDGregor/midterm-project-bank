@@ -6,6 +6,7 @@ import com.ironhack.midtermprojectbank.model.users.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -15,22 +16,27 @@ public abstract class Account {
     @GeneratedValue (strategy = GenerationType.SEQUENCE)
     protected Long id;
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "amount", column = @Column(name = "amount")),
+            @AttributeOverride(name = "currency", column = @Column(name = "currency"))
+
+    })
     protected Money balance;
     @ManyToOne
-//    @JoinColumn(name = "primaryOwner_id")
     protected AccountHolder primaryOwner;
     @ManyToOne
-//    @JoinColumn(name = "secondaryOwner_id", insertable = false, updatable = false)
     protected AccountHolder secondaryOwner;
     protected BigDecimal penaltyFee;
+    protected LocalDateTime dateCreationAccount;
 
     public Account(){}
 
-    public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee) {
+    public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
-        this.penaltyFee = penaltyFee;
+        this.dateCreationAccount = LocalDateTime.now();
+        this.penaltyFee = new BigDecimal("40");
     }
 
     public Long getId() {

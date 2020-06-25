@@ -1,16 +1,14 @@
 package com.ironhack.midtermprojectbank.controller.impl;
 
 import com.ironhack.midtermprojectbank.controller.interfaces.AdminControllerInterface;
+import com.ironhack.midtermprojectbank.dto.SavingPostDTO;
 import com.ironhack.midtermprojectbank.model.accounts.Checking;
 import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.model.accounts.Savings;
 import com.ironhack.midtermprojectbank.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AdminController implements AdminControllerInterface {
@@ -19,8 +17,8 @@ public class AdminController implements AdminControllerInterface {
 
     @PostMapping("/admin/create/saving")
     @ResponseStatus(HttpStatus.CREATED)
-    public Savings createAccount(@RequestBody Savings savings) {
-        return adminService.createSaving(savings);
+    public Savings createAccount(@RequestBody SavingPostDTO savingPostDTO) {
+        return adminService.createSaving(savingPostDTO);
     }
 
     @PostMapping("/admin/create/credit-card")

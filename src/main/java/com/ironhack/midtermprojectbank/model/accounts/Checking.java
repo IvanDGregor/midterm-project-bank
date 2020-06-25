@@ -6,6 +6,8 @@ import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Entity
 //@PrimaryKeyJoinColumn(name="id")
 public class Checking extends StudentChecking{
@@ -19,8 +21,8 @@ public class Checking extends StudentChecking{
     private Money minimumBalance;
     private BigDecimal monthlyMaintenanceFee;
 
-    public Checking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee, String secretKey, Status status, Money minimumBalance, BigDecimal monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, penaltyFee, secretKey, status);
+    public Checking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey, Status status, Money minimumBalance, BigDecimal monthlyMaintenanceFee) {
+        super(balance, primaryOwner, secondaryOwner, secretKey, status);
         this.minimumBalance = minimumBalance;
         this.monthlyMaintenanceFee = monthlyMaintenanceFee;
     }

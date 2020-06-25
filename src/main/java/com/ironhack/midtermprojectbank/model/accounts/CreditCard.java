@@ -2,21 +2,19 @@ package com.ironhack.midtermprojectbank.model.accounts;
 
 import com.ironhack.midtermprojectbank.model.currency.Money;
 import com.ironhack.midtermprojectbank.model.users.AccountHolder;
-import org.bson.codecs.ObjectIdGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-//@PrimaryKeyJoinColumn(name="id")
 public class CreditCard extends Account {
 
     private BigDecimal creditLimit;
     private BigDecimal interestRate;
 
-    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee, BigDecimal creditLimit, BigDecimal interestRate) {
-        super(balance, primaryOwner, secondaryOwner, penaltyFee);
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal creditLimit, BigDecimal interestRate) {
+        super(balance, primaryOwner, secondaryOwner);
         this.creditLimit = creditLimit;
         this.interestRate = interestRate;
     }

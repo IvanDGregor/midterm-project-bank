@@ -5,18 +5,17 @@ import com.ironhack.midtermprojectbank.model.currency.Money;
 import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 
 import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-//@PrimaryKeyJoinColumn(name="id")
 public class StudentChecking extends Account{
 
     private String secretKey;
     private Status status;
 
-    public StudentChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal penaltyFee, String secretKey, Status status) {
-        super(balance, primaryOwner, secondaryOwner, penaltyFee);
+    public StudentChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,  String secretKey, Status status) {
+        super(balance, primaryOwner, secondaryOwner);
         this.secretKey = secretKey;
         this.status = status;
     }
