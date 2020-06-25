@@ -2,7 +2,6 @@ package com.ironhack.midtermprojectbank.model.accounts;
 
 import com.ironhack.midtermprojectbank.model.currency.Money;
 import com.ironhack.midtermprojectbank.model.users.AccountHolder;
-import com.ironhack.midtermprojectbank.model.users.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

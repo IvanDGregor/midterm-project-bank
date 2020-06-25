@@ -4,7 +4,6 @@ import com.ironhack.midtermprojectbank.controller.interfaces.AdminControllerInte
 import com.ironhack.midtermprojectbank.dto.CheckingPostDTO;
 import com.ironhack.midtermprojectbank.dto.CreditCardPostDTO;
 import com.ironhack.midtermprojectbank.dto.SavingPostDTO;
-import com.ironhack.midtermprojectbank.model.accounts.Checking;
 import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.model.accounts.Savings;
 import com.ironhack.midtermprojectbank.service.AdminService;

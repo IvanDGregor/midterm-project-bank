@@ -1,10 +1,7 @@
 package com.ironhack.midtermprojectbank.controller.impl;
 
 import com.ironhack.midtermprojectbank.dto.CreditCardGetDTO;
-import com.ironhack.midtermprojectbank.dto.SavingGetDTO;
-import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.service.CreditCardService;
-import com.ironhack.midtermprojectbank.service.SavingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
