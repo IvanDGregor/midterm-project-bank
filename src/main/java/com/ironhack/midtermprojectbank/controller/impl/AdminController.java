@@ -1,6 +1,8 @@
 package com.ironhack.midtermprojectbank.controller.impl;
 
 import com.ironhack.midtermprojectbank.controller.interfaces.AdminControllerInterface;
+import com.ironhack.midtermprojectbank.dto.CheckingPostDTO;
+import com.ironhack.midtermprojectbank.dto.CreditCardPostDTO;
 import com.ironhack.midtermprojectbank.dto.SavingPostDTO;
 import com.ironhack.midtermprojectbank.model.accounts.Checking;
 import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
@@ -23,13 +25,13 @@ public class AdminController implements AdminControllerInterface {
 
     @PostMapping("/admin/create/credit-card")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreditCard createAccount(@RequestBody CreditCard creditCard) {
+    public CreditCard createAccount(@RequestBody CreditCardPostDTO creditCard) {
         return adminService.createCreditCard(creditCard);
     }
 
     @PostMapping("/admin/create/checking")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createAccount(@RequestBody Checking checking) {
+    public String createAccount(@RequestBody CheckingPostDTO checking) {
         return adminService.createChecking(checking);
     }
 }

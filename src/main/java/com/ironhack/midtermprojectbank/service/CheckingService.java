@@ -20,7 +20,7 @@ public class CheckingService {
 
     public Checking findById(Long id) {
         Checking checkingFound = checkingRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Not found an account with his ID."));
-        BigDecimal minBalance = checkingFound.getMinimumBalance().getAmount();
+        BigDecimal minBalance = checkingFound.getMinimumBalance();
         if(checkingFound.getBalance().getAmount().compareTo(minBalance) < 0){
             checkingFound.getBalance().decreaseAmount(checkingFound.getPenaltyFee());
             return checkingFound;

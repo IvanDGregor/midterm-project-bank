@@ -13,8 +13,8 @@ public class Savings extends StudentChecking{
     private BigDecimal minimumBalance;
     private BigDecimal interestRate;
 
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey, Status status, BigDecimal minimumBalance, BigDecimal interestRate) {
-        super(balance, primaryOwner, secondaryOwner, secretKey, status);
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey, BigDecimal minimumBalance, BigDecimal interestRate) {
+        super(balance, primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = minimumBalance;
         this.interestRate = interestRate;
     }

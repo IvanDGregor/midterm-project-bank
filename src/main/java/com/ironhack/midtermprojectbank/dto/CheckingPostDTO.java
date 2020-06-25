@@ -2,21 +2,21 @@ package com.ironhack.midtermprojectbank.dto;
 
 import java.math.BigDecimal;
 
-public class SavingPostDTO {
+public class CheckingPostDTO {
     private BigDecimal balance;
     private Long idPrimaryOwner;
     private Long idSecondaryOwner;
     private String secretKey;
     private BigDecimal minimumBalance;
-    private BigDecimal interestRate;
+    private BigDecimal monthlyMaintenanceFee;
 
-    public SavingPostDTO(BigDecimal balance, Long idPrimaryOwner, Long idSecondaryOwner, String secretKey, BigDecimal minimumBalance, BigDecimal interestRate) {
+    public CheckingPostDTO(BigDecimal balance, Long idPrimaryOwner, Long idSecondaryOwner, String secretKey, BigDecimal minimumBalance, BigDecimal monthlyMaintenanceFee) {
         this.balance = balance;
         this.idPrimaryOwner = idPrimaryOwner;
         this.idSecondaryOwner = idSecondaryOwner;
         this.secretKey = secretKey;
         this.minimumBalance = minimumBalance;
-        this.interestRate = interestRate;
+        this.monthlyMaintenanceFee = monthlyMaintenanceFee;
     }
 
     public BigDecimal getBalance() {
@@ -59,11 +59,11 @@ public class SavingPostDTO {
         this.minimumBalance = minimumBalance;
     }
 
-    public BigDecimal getInterestRate() {
-        return interestRate;
+    public BigDecimal getMonthlyMaintenanceFee() {
+        return monthlyMaintenanceFee;
     }
 
-    public void setInterestRate(BigDecimal interestRate) {
-        this.interestRate = interestRate;
+    public void setMonthlyMaintenanceFee(BigDecimal monthlyMaintenanceFee) {
+        this.monthlyMaintenanceFee = monthlyMaintenanceFee;
     }
 }

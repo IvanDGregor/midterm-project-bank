@@ -5,8 +5,6 @@ import com.ironhack.midtermprojectbank.model.currency.Money;
 import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 
 import javax.persistence.Entity;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 public class StudentChecking extends Account{
@@ -14,10 +12,10 @@ public class StudentChecking extends Account{
     private String secretKey;
     private Status status;
 
-    public StudentChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,  String secretKey, Status status) {
+    public StudentChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,  String secretKey) {
         super(balance, primaryOwner, secondaryOwner);
         this.secretKey = secretKey;
-        this.status = status;
+        this.status = Status.ACTIVE;
     }
 
     public StudentChecking() {

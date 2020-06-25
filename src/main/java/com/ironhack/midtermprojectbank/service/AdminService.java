@@ -1,5 +1,7 @@
 package com.ironhack.midtermprojectbank.service;
 
+import com.ironhack.midtermprojectbank.dto.CheckingPostDTO;
+import com.ironhack.midtermprojectbank.dto.CreditCardPostDTO;
 import com.ironhack.midtermprojectbank.dto.SavingPostDTO;
 import com.ironhack.midtermprojectbank.enums.Status;
 import com.ironhack.midtermprojectbank.exception.IllegalCreditLimit;
@@ -41,13 +43,11 @@ public class AdminService {
 
     public Savings createSaving(SavingPostDTO newAccount) throws IllegalInterestRateException{
         AccountHolder foundPrimaryOwner = accountHolderRepository.findById(newAccount.getIdPrimaryOwner()).orElseThrow(() -> new UserNotFoundException("Not User found with this ID"));
-        System.out.println(foundPrimaryOwner);
         AccountHolder foundSecondaryOwner = null;
         if(newAccount.getIdSecondaryOwner() != null){
             foundSecondaryOwner = accountHolderRepository.findById(newAccount.getIdSecondaryOwner()).orElse(null);
-            System.out.println(foundSecondaryOwner);
         }
-        Savings newSaving = new Savings(new Money(newAccount.getBalance()),foundPrimaryOwner,foundSecondaryOwner,newAccount.getSecretKey(),Status.valueOf(newAccount.getStatus()),newAccount.getMinimumBalance(),newAccount.getInterestRate());
+        Savings newSaving = new Savings(new Money(newAccount.getBalance()),foundPrimaryOwner,foundSecondaryOwner,newAccount.getSecretKey(), newAccount.getMinimumBalance(),newAccount.getInterestRate());
         BigDecimal maxInterestRate = new BigDecimal("0.5");
         BigDecimal maxMinimumBalance = new BigDecimal("1000");
         BigDecimal minMinimumBalance = new BigDecimal("100");
@@ -71,8 +71,13 @@ public class AdminService {
         return savingsRepository.save(newSaving);
     }
 
-    public CreditCard createCreditCard(CreditCard newAccount) {
-        CreditCard newCreditCard = new CreditCard(newAccount.getBalance(), newAccount.getPrimaryOwner(), newAccount.getSecondaryOwner(),newAccount.getCreditLimit(), newAccount.getInterestRate());
+    public CreditCard createCreditCard(CreditCardPostDTO newAccount) {
+        AccountHolder foundPrimaryOwner = accountHolderRepository.findById(newAccount.getIdPrimaryOwner()).orElseThrow(() -> new UserNotFoundException("Not User found with this ID"));
+        AccountHolder foundSecondaryOwner = null;
+        if(newAccount.getIdSecondaryOwner() != null){
+            foundSecondaryOwner = accountHolderRepository.findById(newAccount.getIdSecondaryOwner()).orElse(null);
+        }
+        CreditCard newCreditCard = new CreditCard(new Money(newAccount.getBalance()), foundPrimaryOwner, foundSecondaryOwner,newAccount.getCreditLimit(), newAccount.getInterestRate());
         BigDecimal maxCreditLimit = new BigDecimal("100000");
         BigDecimal minCreditLimit = new BigDecimal("100");
         BigDecimal minInterestRate = new BigDecimal("0.1");
@@ -92,8 +97,13 @@ public class AdminService {
         return creditCardRepository.save(newCreditCard);
     }
 
-    public String createChecking(Checking newAccount){
-        Checking newChecking = new Checking(newAccount.getBalance(),newAccount.getPrimaryOwner(),newAccount.getSecondaryOwner(),newAccount.getSecretKey(),newAccount.getStatus(),newAccount.getMinimumBalance(),newAccount.getMonthlyMaintenanceFee());
+    public String createChecking(CheckingPostDTO newAccount){
+        AccountHolder foundPrimaryOwner = accountHolderRepository.findById(newAccount.getIdPrimaryOwner()).orElseThrow(() -> new UserNotFoundException("Not User found with this ID"));
+        AccountHolder foundSecondaryOwner = null;
+        if(newAccount.getIdSecondaryOwner() != null){
+            foundSecondaryOwner = accountHolderRepository.findById(newAccount.getIdSecondaryOwner()).orElse(null);
+        }
+        Checking newChecking = new Checking(new Money(newAccount.getBalance()), foundPrimaryOwner, foundSecondaryOwner,newAccount.getSecretKey(), newAccount.getMinimumBalance(),newAccount.getMonthlyMaintenanceFee());
         BigDecimal min = new BigDecimal("100");
 
 
@@ -101,19 +111,19 @@ public class AdminService {
             newChecking.setMonthlyMaintenanceFee(new BigDecimal("12"));
         }
         if (newChecking.getMinimumBalance() == null) {
-            newChecking.setMinimumBalance(new Money(new BigDecimal("250")));
+            newChecking.setMinimumBalance(new BigDecimal("250"));
         }
-        else if (newChecking.getMinimumBalance().getAmount().compareTo(BigDecimal.ZERO) < 0 || newChecking.getMonthlyMaintenanceFee().compareTo(BigDecimal.ZERO) < 0) {
+        else if (newChecking.getMinimumBalance().compareTo(BigDecimal.ZERO) < 0 || newChecking.getMonthlyMaintenanceFee().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Invalid Minimum Balance or Monthly Maintenance Fee");
         }
         // Get the current time
         LocalDateTime now = LocalDateTime.now();
         // Calculate the days between current time and the date of Birth of the Primary Owner
-        Long daysPrimaryOwner = DAYS.between(newAccount.getPrimaryOwner().getDateOfBirth(),now);
+        Long daysPrimaryOwner = DAYS.between(foundPrimaryOwner.getDateOfBirth(),now);
         // 24 years == 8760 days if the primary Owner have less 8760 days then created
         // a StudentChecking otherwise created a Checking Account
         if(daysPrimaryOwner < 8760){
-            StudentChecking newStudentChecking = new StudentChecking(newAccount.getBalance(),newAccount.getPrimaryOwner(),newAccount.getSecondaryOwner(),newAccount.getSecretKey(),newAccount.getStatus());
+            StudentChecking newStudentChecking = new StudentChecking(new Money(newAccount.getBalance()),foundPrimaryOwner,foundSecondaryOwner,newAccount.getSecretKey());
             studentCheckingRepository.save(newStudentChecking);
             return "StudentChecking account created";
         }
