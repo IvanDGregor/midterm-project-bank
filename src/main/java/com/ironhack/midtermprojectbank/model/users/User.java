@@ -1,25 +1,27 @@
 package com.ironhack.midtermprojectbank.model.users;
 
-import com.ironhack.midtermprojectbank.model.accounts.Account;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     protected Long id;
-    protected String name;
+    protected String username;
     protected String password;
+    @OneToMany(fetch= FetchType.EAGER, cascade= CascadeType.ALL, mappedBy="user")
+    private Set<Role> roles = new HashSet<>();
 
 
     public User() {
     }
 
-    public User(String name, String password) {
-        this.name = name;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -31,12 +33,12 @@ public abstract class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public String getPassword() {
@@ -45,5 +47,13 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

@@ -3,7 +3,6 @@ package com.ironhack.midtermprojectbank.service;
 import com.ironhack.midtermprojectbank.dto.CheckingPostDTO;
 import com.ironhack.midtermprojectbank.dto.CreditCardPostDTO;
 import com.ironhack.midtermprojectbank.dto.SavingPostDTO;
-import com.ironhack.midtermprojectbank.enums.Status;
 import com.ironhack.midtermprojectbank.exception.IllegalCreditLimit;
 import com.ironhack.midtermprojectbank.exception.IllegalInterestRateException;
 import com.ironhack.midtermprojectbank.exception.IllegalMinimumBalance;
@@ -15,7 +14,6 @@ import com.ironhack.midtermprojectbank.model.accounts.StudentChecking;
 import com.ironhack.midtermprojectbank.model.currency.Money;
 import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 import com.ironhack.midtermprojectbank.repository.*;
-import org.bson.types.BSONTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
