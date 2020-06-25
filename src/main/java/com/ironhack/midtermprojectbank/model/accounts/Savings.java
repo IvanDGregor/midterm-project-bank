@@ -6,6 +6,7 @@ import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 
 import javax.persistence.Entity;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 public class Savings extends StudentChecking{

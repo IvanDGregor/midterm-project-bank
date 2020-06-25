@@ -28,6 +28,7 @@ public abstract class Account {
     protected AccountHolder secondaryOwner;
     protected BigDecimal penaltyFee;
     protected LocalDateTime dateCreationAccount;
+    protected LocalDateTime dateInterest;
 
     public Account(){}
 
@@ -36,6 +37,7 @@ public abstract class Account {
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
         this.dateCreationAccount = LocalDateTime.now();
+        this.dateInterest = LocalDateTime.now();
         this.penaltyFee = new BigDecimal("40");
     }
 
@@ -77,5 +79,21 @@ public abstract class Account {
 
     public void setPenaltyFee(BigDecimal penaltyFee) {
         this.penaltyFee = penaltyFee;
+    }
+
+    public LocalDateTime getDateCreationAccount() {
+        return dateCreationAccount;
+    }
+
+    public void setDateCreationAccount(LocalDateTime dateCreationAccount) {
+        this.dateCreationAccount = dateCreationAccount;
+    }
+
+    public LocalDateTime getDateInterest() {
+        return dateInterest;
+    }
+
+    public void setDateInterest(LocalDateTime dateInterest) {
+        this.dateInterest = dateInterest;
     }
 }
