@@ -6,7 +6,9 @@ import com.ironhack.midtermprojectbank.model.address.Address;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class AccountHolder extends User{
@@ -28,8 +30,8 @@ public class AccountHolder extends User{
     @OneToMany(mappedBy = "secondaryOwner")
     protected List<Account> accountListSecondaryOwner;
 
-    public AccountHolder(String name, String password, LocalDateTime dateOfBirth, Address primaryAdress, Address mailingAdress) {
-        super(name, password);
+    public AccountHolder(String username, String password, LocalDateTime dateOfBirth, Address primaryAdress, Address mailingAdress) {
+        super(username, password);
         this.dateOfBirth = dateOfBirth;
         this.primaryAdress = primaryAdress;
         this.mailingAdress = mailingAdress;
@@ -61,4 +63,5 @@ public class AccountHolder extends User{
     public void setMailingAdress(Address mailingAdress) {
         this.mailingAdress = mailingAdress;
     }
+
 }

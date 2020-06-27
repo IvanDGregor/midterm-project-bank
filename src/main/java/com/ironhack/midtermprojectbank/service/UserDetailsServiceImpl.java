@@ -1,6 +1,5 @@
 package com.ironhack.midtermprojectbank.service;
 
-
 import com.ironhack.midtermprojectbank.model.users.User;
 import com.ironhack.midtermprojectbank.repository.UserRepository;
 import com.ironhack.midtermprojectbank.security.CustomSecurityUser;
@@ -14,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepo.findByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         if (user == null)
             throw new UsernameNotFoundException("Invalid username/password combination.");

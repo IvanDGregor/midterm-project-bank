@@ -5,24 +5,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "roles")
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String role;
-
     @ManyToOne
-    @JsonIgnore
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Role() {
     }
 
-    public Role(String role, User user) {
+    public Role(String role) {
         this.role = role;
-        this.user = user;
     }
 
     public Long getId() {
@@ -39,20 +37,5 @@ public class Role {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", authority='" + role + '\'';
     }
 }

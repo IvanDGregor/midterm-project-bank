@@ -3,28 +3,25 @@ package com.ironhack.midtermprojectbank.model.users;
 import javax.persistence.*;
 
 @Entity
-public class ThirdParty {
+public class ThirdParty extends User{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String hasKey;
+    private String hashKey;
     private String name;
 
-    public ThirdParty(String hasKey, String name) {
-        this.hasKey = hasKey;
+    public ThirdParty(String hashKey, String name) {
+        this.hashKey = hashKey;
         this.name = name;
     }
 
     public ThirdParty() {
     }
 
-    public String getHasKey() {
-        return hasKey;
+    public String getHashKey() {
+        return hashKey;
     }
 
-    public void setHasKey(String hasKey) {
-        this.hasKey = hasKey;
+    public void setHashKey(String hasKey) {
+        this.hashKey = hasKey;
     }
 
     public String getName() {
@@ -34,4 +31,5 @@ public class ThirdParty {
     public void setName(String name) {
         this.name = name;
     }
+
 }

@@ -39,9 +39,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.httpBasic();
-        httpSecurity.authorizeRequests().antMatchers(HttpMethod.POST, "/salesrep/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/^((?!resources/**).)*$").hasAuthority("ROLE_SALESREP")
-                .antMatchers("/", "/resources/**").permitAll()
+        httpSecurity.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/saving/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/saving/**").hasAuthority("ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/credit-card/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/credit-card/**").hasAuthority("ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/checking/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/checking/**").hasAuthority("ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/student-checking/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/student-checking/**").hasAuthority("ROLE_HOLDER")
+                .antMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")
+//                .antMatchers("/", "/resources/**").permitAll()
                 .and().logout().deleteCookies("JSESSIONID");
 
         httpSecurity.csrf().disable();

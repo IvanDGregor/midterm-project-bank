@@ -5,17 +5,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     protected Long id;
     protected String username;
     protected String password;
-    @OneToMany(fetch= FetchType.EAGER, cascade= CascadeType.ALL, mappedBy="user")
-    private Set<Role> roles = new HashSet<>();
-
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    protected Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -37,8 +36,8 @@ public abstract class User {
         return username;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
