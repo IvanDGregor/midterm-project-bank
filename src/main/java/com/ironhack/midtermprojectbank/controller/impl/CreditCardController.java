@@ -1,13 +1,12 @@
 package com.ironhack.midtermprojectbank.controller.impl;
 
+import com.ironhack.midtermprojectbank.dto.AccountPostDTO;
 import com.ironhack.midtermprojectbank.dto.CreditCardGetDTO;
+import com.ironhack.midtermprojectbank.dto.TransferDTO;
 import com.ironhack.midtermprojectbank.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CreditCardController {
@@ -18,5 +17,10 @@ public class CreditCardController {
     @ResponseStatus(HttpStatus.OK)
     public CreditCardGetDTO findByIdAccountAndIdOwner(@PathVariable Long idOwner, @PathVariable Long idAccount) {
         return creditCardService.findByIdAccountAndIdOwner(idOwner,idAccount);
+    }
+    @PostMapping("/credit-card/{idAccountSender}/{idOwnerSender}")
+    @ResponseStatus(HttpStatus.OK)
+    public TransferDTO transfer(@PathVariable Long idOwnerSender, @PathVariable Long idAccountSender, @RequestBody AccountPostDTO accountPostDTO) {
+        return creditCardService.transfer(idAccountSender,idOwnerSender, accountPostDTO);
     }
 }

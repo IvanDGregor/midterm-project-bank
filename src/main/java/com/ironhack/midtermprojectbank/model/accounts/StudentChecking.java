@@ -5,11 +5,14 @@ import com.ironhack.midtermprojectbank.model.currency.Money;
 import com.ironhack.midtermprojectbank.model.users.AccountHolder;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 public class StudentChecking extends Account{
 
     private String secretKey;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public StudentChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,  String secretKey) {

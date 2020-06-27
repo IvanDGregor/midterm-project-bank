@@ -9,7 +9,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,14 +39,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         httpSecurity.httpBasic();
         httpSecurity.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/saving/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.GET, "/saving/**").hasAuthority("ROLE_HOLDER")
-                .antMatchers(HttpMethod.GET, "/credit-card/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.GET, "/credit-card/**").hasAuthority("ROLE_HOLDER")
-                .antMatchers(HttpMethod.GET, "/checking/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.GET, "/checking/**").hasAuthority("ROLE_HOLDER")
-                .antMatchers(HttpMethod.GET, "/student-checking/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.GET, "/student-checking/**").hasAuthority("ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/saving/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/credit-card/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/checking/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/student-checking/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
                 .antMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")
 //                .antMatchers("/", "/resources/**").permitAll()
                 .and().logout().deleteCookies("JSESSIONID");

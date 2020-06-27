@@ -1,11 +1,17 @@
 package com.ironhack.midtermprojectbank.service;
 
+import com.ironhack.midtermprojectbank.dto.AccountPostDTO;
 import com.ironhack.midtermprojectbank.dto.SavingGetDTO;
+import com.ironhack.midtermprojectbank.dto.TransferDTO;
+import com.ironhack.midtermprojectbank.exception.AccountNotFoundException;
+import com.ironhack.midtermprojectbank.exception.NotEnoughMoneyException;
+import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.model.accounts.Savings;
 import com.ironhack.midtermprojectbank.repository.SavingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -29,7 +35,28 @@ public class SavingService {
             foundSaving.setDateInterest(foundSaving.getDateInterest().plusYears(yearsPrimaryOwner));
             savingsRepository.save(foundSaving);
         }
-
         return new SavingGetDTO(foundSaving.getBalance().getAmount(), foundSaving.getBalance().getCurrency());
+    }
+
+    @Transactional
+    public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
+        Savings foundSenderSaving = savingsRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
+        if(foundSenderSaving == null){
+            throw new AccountNotFoundException("Account not found with this ID");
+        }
+        if(accountPostDTO.getAmount().compareTo(foundSenderSaving.getBalance().getAmount()) > 0){
+            throw new NotEnoughMoneyException("This account does not have enough balance");
+        }
+
+        Savings foundReceiverSaving = savingsRepository.findByIdAccountAndIdOwner(accountPostDTO.getIdAccountReceiver(), accountPostDTO.getIdOwnerReceiver());
+
+        if(foundReceiverSaving == null){
+            throw new AccountNotFoundException("It is not possible to make the transfer the indicated account cannot be found");
+        }
+        foundSenderSaving.getBalance().decreaseAmount(accountPostDTO.getAmount());
+        savingsRepository.save(foundSenderSaving);
+        foundReceiverSaving.getBalance().increaseAmount(accountPostDTO.getAmount());
+        savingsRepository.save(foundReceiverSaving);
+        return new TransferDTO(foundSenderSaving.getId(),accountPostDTO.getAmount(),foundSenderSaving.getBalance().getAmount(),foundReceiverSaving.getId());
     }
 }

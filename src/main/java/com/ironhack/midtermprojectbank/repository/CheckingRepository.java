@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CheckingRepository extends JpaRepository<Checking, Long> {
-    @Query(value = "SELECT * FROM credit_card WHERE id = ?1 AND primary_owner_id = ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM checking WHERE id = ?1 AND primary_owner_id = ?2", nativeQuery = true)
     Checking findByIdAccountAndIdOwner(Long idAccount, Long idOwner);
 }

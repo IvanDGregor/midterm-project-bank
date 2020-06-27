@@ -1,11 +1,17 @@
 package com.ironhack.midtermprojectbank.service;
 
+import com.ironhack.midtermprojectbank.dto.AccountPostDTO;
 import com.ironhack.midtermprojectbank.dto.CreditCardGetDTO;
+import com.ironhack.midtermprojectbank.dto.TransferDTO;
+import com.ironhack.midtermprojectbank.exception.AccountNotFoundException;
+import com.ironhack.midtermprojectbank.exception.NotEnoughMoneyException;
+import com.ironhack.midtermprojectbank.model.accounts.Checking;
 import com.ironhack.midtermprojectbank.model.accounts.CreditCard;
 import com.ironhack.midtermprojectbank.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -31,6 +37,27 @@ public class CreditCardService {
             creditCardRepository.save(foundCreditCard);
         }
         return new CreditCardGetDTO(foundCreditCard.getBalance().getAmount(), foundCreditCard.getBalance().getCurrency());
+    }
 
+    @Transactional
+    public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
+        CreditCard foundSenderCrecitCard = creditCardRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
+        if(foundSenderCrecitCard == null){
+            throw new AccountNotFoundException("Account not found with this ID");
+        }
+        if(accountPostDTO.getAmount().compareTo(foundSenderCrecitCard.getBalance().getAmount()) > 0){
+            throw new NotEnoughMoneyException("This account does not have enough balance");
+        }
+
+        CreditCard foundReceiverCreditCard = creditCardRepository.findByIdAccountAndIdOwner(accountPostDTO.getIdAccountReceiver(), accountPostDTO.getIdOwnerReceiver());
+
+        if(foundReceiverCreditCard == null){
+            throw new AccountNotFoundException("It is not possible to make the transfer the indicated account cannot be found");
+        }
+        foundSenderCrecitCard.getBalance().decreaseAmount(accountPostDTO.getAmount());
+        creditCardRepository.save(foundSenderCrecitCard);
+        foundReceiverCreditCard.getBalance().increaseAmount(accountPostDTO.getAmount());
+        creditCardRepository.save(foundReceiverCreditCard);
+        return new TransferDTO(foundSenderCrecitCard.getId(),accountPostDTO.getAmount(),foundSenderCrecitCard.getBalance().getAmount(),foundReceiverCreditCard.getId());
     }
 }
