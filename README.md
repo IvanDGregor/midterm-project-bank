@@ -10,7 +10,7 @@ To start to use the program you need:
 
 3. http://localhost:8080
 
-# API Routes
+## API Routes
 
 | Method | Route        |                    Response                     |
 | ------ | --------------- | :---------------------------------------------: |
@@ -28,7 +28,7 @@ To start to use the program you need:
 | POST   | /third-party/debit/{hashKey}   |     Debit to especific account               |
 | POST    | /third-party/credit/{hashKey} | Credit to especific account |
 
-# Tools
+## Tools
 
 Intellij 2020
 
