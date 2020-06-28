@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/credit-card/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
                 .antMatchers(HttpMethod.GET, "/checking/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
                 .antMatchers(HttpMethod.GET, "/student-checking/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
+                .antMatchers(HttpMethod.GET, "/third-party/**").hasAnyAuthority("ROLE_ADMIN","ROLE_HOLDER")
                 .antMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")
 //                .antMatchers("/", "/resources/**").permitAll()
                 .and().logout().deleteCookies("JSESSIONID");

@@ -30,6 +30,10 @@ public class CheckingService {
         }
     }
 
+    public Checking findById(Long id) {
+        return checkingRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found"));
+    }
+
     @Transactional
     public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
         Checking foundSenderChecking = checkingRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
