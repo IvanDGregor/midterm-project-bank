@@ -11,6 +11,8 @@ import com.ironhack.midtermprojectbank.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @Service
 public class ThirdPartyService {
 
@@ -26,6 +28,8 @@ public class ThirdPartyService {
     CreditCardRepository creditCardRepository;
 
     public String debit(String hashKey, ThirdPartyPostDTO thirdPartyPostDTO){
+        LOGGER.info("Init debit Third Party service");
+        LOGGER.info("Search Third Party");
         ThirdParty foundThirdParty = thirdPartyRepository.findByHashKey(hashKey);
 
         if(foundThirdParty != null){
@@ -61,6 +65,8 @@ public class ThirdPartyService {
     }
 
     public String credit(String hashKey, ThirdPartyPostDTO thirdPartyPostDTO){
+        LOGGER.info("Init debit Third Party service");
+        LOGGER.info("Search Third Party");
         ThirdParty foundThirdParty = thirdPartyRepository.findByHashKey(hashKey);
 
         if(foundThirdParty != null){

@@ -13,29 +13,38 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @Service
 public class CheckingService {
     @Autowired
     CheckingRepository checkingRepository;
 
     public CheckingGetDTO findByIdAccountAndIdOwner(Long idAccount, Long idOwner){
+        LOGGER.info("Init findByIdAccountAndIdOwner service");
+        LOGGER.info("Search account");
         Checking foundChecking = checkingRepository.findByIdAccountAndIdOwner(idAccount, idOwner);
         BigDecimal minBalance = foundChecking.getMinimumBalance();
         if(foundChecking.getBalance().getAmount().compareTo(minBalance) < 0){
             foundChecking.getBalance().decreaseAmount(foundChecking.getPenaltyFee());
+            LOGGER.info("Found account " + foundChecking);
             return new CheckingGetDTO(foundChecking.getBalance().getAmount(),foundChecking.getBalance().getCurrency());
         }
         else {
+            LOGGER.info("Found account " + foundChecking);
             return new CheckingGetDTO(foundChecking.getBalance().getAmount(),foundChecking.getBalance().getCurrency());
         }
     }
 
     public Checking findById(Long id) {
+        LOGGER.info("Init findById service");
         return checkingRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
 
     @Transactional
     public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
+        LOGGER.info("Init Transfer service");
+        LOGGER.info("Search account");
         Checking foundSenderChecking = checkingRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
         if(foundSenderChecking == null){
             throw new AccountNotFoundException("Account not found with this ID");
@@ -53,6 +62,7 @@ public class CheckingService {
         checkingRepository.save(foundSenderChecking);
         foundReceiverChecking.getBalance().increaseAmount(accountPostDTO.getAmount());
         checkingRepository.save(foundReceiverChecking);
+        LOGGER.info("Transfer done ");
         return new TransferDTO(foundSenderChecking.getId(),accountPostDTO.getAmount(),foundSenderChecking.getBalance().getAmount(),foundReceiverChecking.getId());
     }
 }

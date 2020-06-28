@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @Service
 public class AdminService {
@@ -40,9 +41,13 @@ public class AdminService {
     AccountHolderRepository accountHolderRepository;
 
     public Savings createSaving(SavingPostDTO newAccount) throws IllegalInterestRateException{
+        LOGGER.info("Init createSaving service");
+        LOGGER.info("Search owner");
         AccountHolder foundPrimaryOwner = accountHolderRepository.findById(newAccount.getIdPrimaryOwner()).orElseThrow(() -> new UserNotFoundException("Not User found with this ID"));
         AccountHolder foundSecondaryOwner = null;
+        LOGGER.info(foundPrimaryOwner);
         if(newAccount.getIdSecondaryOwner() != null){
+            LOGGER.info("Found Account with secondary owner");
             foundSecondaryOwner = accountHolderRepository.findById(newAccount.getIdSecondaryOwner()).orElse(null);
         }
         Savings newSaving = new Savings(new Money(newAccount.getBalance()),foundPrimaryOwner,foundSecondaryOwner,newAccount.getSecretKey(), newAccount.getMinimumBalance(),newAccount.getInterestRate());
@@ -66,10 +71,13 @@ public class AdminService {
         else if(newSaving.getMinimumBalance().compareTo(maxMinimumBalance) > 0 || newSaving.getMinimumBalance().compareTo(minMinimumBalance) < 0){
             throw new IllegalMinimumBalance("Invalid Minimum Balance");
         }
+        LOGGER.info("Save Account " + newSaving);
         return savingsRepository.save(newSaving);
     }
 
     public CreditCard createCreditCard(CreditCardPostDTO newAccount) {
+        LOGGER.info("Init createCreditCard service");
+        LOGGER.info("Search owner");
         AccountHolder foundPrimaryOwner = accountHolderRepository.findById(newAccount.getIdPrimaryOwner()).orElseThrow(() -> new UserNotFoundException("Not User found with this ID"));
         AccountHolder foundSecondaryOwner = null;
         if(newAccount.getIdSecondaryOwner() != null){
@@ -92,10 +100,13 @@ public class AdminService {
         } else if (newCreditCard.getInterestRate().compareTo(maxInterestRate) > 0 || newCreditCard.getInterestRate().compareTo(minInterestRate) < 0) {
             throw new IllegalInterestRateException("Interest Rate must be lower than 0.2 and higher than 0.1");
         }
+        LOGGER.info("Save new account " + newCreditCard);
         return creditCardRepository.save(newCreditCard);
     }
 
     public String createChecking(CheckingPostDTO newAccount){
+        LOGGER.info("Init createChecking service");
+        LOGGER.info("Search Owner");
         AccountHolder foundPrimaryOwner = accountHolderRepository.findById(newAccount.getIdPrimaryOwner()).orElseThrow(() -> new UserNotFoundException("Not User found with this ID"));
         AccountHolder foundSecondaryOwner = null;
         if(newAccount.getIdSecondaryOwner() != null){
@@ -123,9 +134,11 @@ public class AdminService {
         if(daysPrimaryOwner < 8760){
             StudentChecking newStudentChecking = new StudentChecking(new Money(newAccount.getBalance()),foundPrimaryOwner,foundSecondaryOwner,newAccount.getSecretKey());
             studentCheckingRepository.save(newStudentChecking);
+            LOGGER.info("Save new Account " + newChecking);
             return "StudentChecking account created";
         }
         else {
+            LOGGER.info("Save new Account " + newChecking);
             checkingRepository.save(newChecking);
             return "Checking account created";
         }

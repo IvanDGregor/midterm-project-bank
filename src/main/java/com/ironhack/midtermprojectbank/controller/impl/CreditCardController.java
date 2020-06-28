@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @RestController
 public class CreditCardController {
     @Autowired
@@ -16,6 +18,7 @@ public class CreditCardController {
     @GetMapping("/credit-card/{idOwner}/{idAccount}")
     @ResponseStatus(HttpStatus.OK)
     public CreditCardGetDTO findByIdAccountAndIdOwner(@PathVariable Long idOwner, @PathVariable Long idAccount) {
+        LOGGER.info("This is info message");
         return creditCardService.findByIdAccountAndIdOwner(idOwner,idAccount);
     }
     @PostMapping("/credit-card/{idAccountSender}/{idOwnerSender}")

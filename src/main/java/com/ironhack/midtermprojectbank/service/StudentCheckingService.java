@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @Service
 public class StudentCheckingService {
 
@@ -20,15 +23,20 @@ public class StudentCheckingService {
     StudentCheckingRepository studentCheckingRepository;
 
     public StudentGetDTO findByIdAccountAndIdOwner(Long idOwner, Long idAccount){
+        LOGGER.info("Init findByIdAccountAndIdOwner service");
+        LOGGER.info("Search account");
         StudentChecking foundStudent = studentCheckingRepository.findByIdAccountAndIdOwner(idOwner,idAccount);
         if(foundStudent == null){
             throw new AccountNotFoundException("No found Account with this ID");
         }
+        LOGGER.info("Found Account");
         return new StudentGetDTO(foundStudent.getBalance().getAmount(), foundStudent.getBalance().getCurrency());
     }
 
     @Transactional
     public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
+        LOGGER.info("Init transfer service");
+        LOGGER.info("Search account");
         Savings foundSenderStudent = studentCheckingRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
         if(foundSenderStudent == null){
             throw new AccountNotFoundException("Account not found with this ID");
@@ -46,6 +54,7 @@ public class StudentCheckingService {
         studentCheckingRepository.save(foundSenderStudent);
         foundReceiverStudent.getBalance().increaseAmount(accountPostDTO.getAmount());
         studentCheckingRepository.save(foundReceiverStudent);
+        LOGGER.info("Transfer Done");
         return new TransferDTO(foundSenderStudent.getId(),accountPostDTO.getAmount(),foundSenderStudent.getBalance().getAmount(),foundReceiverStudent.getId());
     }
 }

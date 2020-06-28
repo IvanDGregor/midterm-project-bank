@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @RestController
 public class ThirdPartyController implements ThirdPartyControllerInterface {
     @Autowired
@@ -19,12 +21,14 @@ public class ThirdPartyController implements ThirdPartyControllerInterface {
     @PostMapping("/third-party/debit/{hashKey}")
     @ResponseStatus(HttpStatus.OK)
     public String debit(@PathVariable String hashKey, @RequestBody ThirdPartyPostDTO thirdPartyPostDTO) {
+        LOGGER.info("Calling Third Party debit service");
         return thirdPartyService.debit(hashKey, thirdPartyPostDTO);
     }
 
     @PostMapping("/third-party/credit/{hashKey}")
     @ResponseStatus(HttpStatus.OK)
     public String credit(@PathVariable String hashKey, @RequestBody ThirdPartyPostDTO thirdPartyPostDTO) {
+        LOGGER.info("Calling Third Party credit service");
         return thirdPartyService.credit(hashKey, thirdPartyPostDTO);
     }
 }

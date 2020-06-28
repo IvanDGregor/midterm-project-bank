@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static java.time.temporal.ChronoUnit.YEARS;
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @Service
 public class SavingService {
@@ -23,6 +24,8 @@ public class SavingService {
     SavingsRepository savingsRepository;
 
     public SavingGetDTO findByIdAccountAndIdOwner(Long idOwner, Long idAccount){
+        LOGGER.info("Init findByIdAccountAndIdOwner service");
+        LOGGER.info("Search account");
         Savings foundSaving = savingsRepository.findByIdAccountAndIdOwner(idOwner,idAccount);
         // Get the current time
         LocalDateTime now = LocalDateTime.now();
@@ -35,11 +38,14 @@ public class SavingService {
             foundSaving.setDateInterest(foundSaving.getDateInterest().plusYears(yearsPrimaryOwner));
             savingsRepository.save(foundSaving);
         }
+        LOGGER.info("Found Account");
         return new SavingGetDTO(foundSaving.getBalance().getAmount(), foundSaving.getBalance().getCurrency());
     }
 
     @Transactional
     public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
+        LOGGER.info("Init transfer service");
+        LOGGER.info("Search account");
         Savings foundSenderSaving = savingsRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
         if(foundSenderSaving == null){
             throw new AccountNotFoundException("Account not found with this ID");
@@ -57,6 +63,7 @@ public class SavingService {
         savingsRepository.save(foundSenderSaving);
         foundReceiverSaving.getBalance().increaseAmount(accountPostDTO.getAmount());
         savingsRepository.save(foundReceiverSaving);
+        LOGGER.info("Transfer Done");
         return new TransferDTO(foundSenderSaving.getId(),accountPostDTO.getAmount(),foundSenderSaving.getBalance().getAmount(),foundReceiverSaving.getId());
     }
 }

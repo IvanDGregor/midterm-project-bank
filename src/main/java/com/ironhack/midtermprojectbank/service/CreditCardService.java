@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static java.time.temporal.ChronoUnit.MONTHS;
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @Service
 public class CreditCardService {
@@ -23,6 +24,8 @@ public class CreditCardService {
     CreditCardRepository creditCardRepository;
 
     public CreditCardGetDTO findByIdAccountAndIdOwner(Long idOwner, Long idAccount){
+        LOGGER.info("Init findByIdAccountAndIdOwner service");
+        LOGGER.info("Search account");
         CreditCard foundCreditCard = creditCardRepository.findByIdAccountAndIdOwner(idOwner,idAccount);
         // Get the current time
         LocalDateTime now = LocalDateTime.now();
@@ -36,11 +39,14 @@ public class CreditCardService {
             foundCreditCard.setDateInterest(foundCreditCard.getDateInterest().plusMonths(monthsPrimaryOwner));
             creditCardRepository.save(foundCreditCard);
         }
+        LOGGER.info("Find account");
         return new CreditCardGetDTO(foundCreditCard.getBalance().getAmount(), foundCreditCard.getBalance().getCurrency());
     }
 
     @Transactional
     public TransferDTO transfer(Long idAccountSender, Long idOwnerSender, AccountPostDTO accountPostDTO){
+        LOGGER.info("Init transfer service");
+        LOGGER.info("Search account");
         CreditCard foundSenderCrecitCard = creditCardRepository.findByIdAccountAndIdOwner(idAccountSender, idOwnerSender);
         if(foundSenderCrecitCard == null){
             throw new AccountNotFoundException("Account not found with this ID");
@@ -58,6 +64,8 @@ public class CreditCardService {
         creditCardRepository.save(foundSenderCrecitCard);
         foundReceiverCreditCard.getBalance().increaseAmount(accountPostDTO.getAmount());
         creditCardRepository.save(foundReceiverCreditCard);
+
+        LOGGER.info("Transfer Done");
         return new TransferDTO(foundSenderCrecitCard.getId(),accountPostDTO.getAmount(),foundSenderCrecitCard.getBalance().getAmount(),foundReceiverCreditCard.getId());
     }
 }

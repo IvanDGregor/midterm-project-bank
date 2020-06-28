@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @RestController
 public class CheckingController implements CheckingControllerInterface {
     @Autowired
@@ -19,12 +21,14 @@ public class CheckingController implements CheckingControllerInterface {
     @GetMapping("/checking/{idAccount}/{idOwner}")
     @ResponseStatus(HttpStatus.OK)
     public CheckingGetDTO findByIdAccountAndIdOwner(@PathVariable Long idAccount, @PathVariable Long idOwner) {
+        LOGGER.info("Calling Find by IdAccount and IdOwner service");
         return checkingService.findByIdAccountAndIdOwner(idAccount,idOwner);
     }
 
     @PostMapping("/checking/{idAccountSender}/{idOwnerSender}")
     @ResponseStatus(HttpStatus.OK)
     public TransferDTO transfer(@PathVariable Long idOwnerSender, @PathVariable Long idAccountSender, @RequestBody AccountPostDTO accountPostDTO) {
+        LOGGER.info("Calling transfer Service");
         return checkingService.transfer(idAccountSender,idOwnerSender, accountPostDTO);
     }
 
