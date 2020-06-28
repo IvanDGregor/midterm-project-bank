@@ -31,9 +31,13 @@ To start to use the program you need:
 # Tools
 
 Intellij 2020
+
 Spring Boot
+
 MySQL
+
 MongoDB
+
 
 
 
